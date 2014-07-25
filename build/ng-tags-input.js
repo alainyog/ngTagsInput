@@ -5,7 +5,7 @@
  * Copyright (c) 2013-2014 Michael Benford
  * License: MIT
  *
- * Generated at 2014-07-23 11:42:08 -0300
+ * Generated at 2014-07-25 19:46:44 -0400
  */
 (function() {
 'use strict';
@@ -669,26 +669,26 @@ tagsInput.directive('tiTranscludeAppend', function() {
 });
 
 /**
- * @ngdoc directive
- * @name tiAutosize
- * @module ngTagsInput
- *
- * @description
- * Automatically sets the input's width so its content is always visible. Used internally by tagsInput directive.
- */
-tagsInput.directive('tiAutosize', function() {
+* @ngdoc directive
+* @name tiAutosize
+* @module ngTagsInput
+*
+* @description
+* Automatically sets the input's width so its content is always visible. Used internally by tagsInput directive.
+*/
+tagsInput.directive('tiAutosize', ['$timeout', function($timeout) {
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function(scope, element, attrs, ctrl) {
             var THRESHOLD = 3,
-                span, resize;
+            span, resize;
 
             span = angular.element('<span class="input"></span>');
             span.css('display', 'none')
-                .css('visibility', 'hidden')
-                .css('width', 'auto')
-                .css('white-space', 'pre');
+            .css('visibility', 'hidden')
+            .css('width', 'auto')
+            .css('white-space', 'pre');
 
             element.parent().append(span);
 
@@ -719,9 +719,17 @@ tagsInput.directive('tiAutosize', function() {
                     resize(value);
                 }
             });
+            scope.$parent.$watch(element.parents('tags-input').attr('resize'), function (value) {
+                if(value){
+                    $timeout(function(){
+                        resize(ctrl.$modelValue);
+                    }, 0);
+                }
+            });
         }
     };
-});
+}]);
+
 
 /**
  * @ngdoc directive
