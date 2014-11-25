@@ -66,6 +66,7 @@ tagsInput.directive('autoComplete', function($document, $timeout, $sce, tagsInpu
 
                     if (self.items.length > 0) {
                         self.show();
+                        self.select(0);
                     }
                     else {
                         self.reset();
